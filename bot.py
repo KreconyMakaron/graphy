@@ -11,9 +11,10 @@ intents.message_content = True
 graph_help = f"seperate shit with pipe |\n" \
              f"{prefix}graph sin(x)\n" \
              f"{prefix}graph sin(x)|cos(x)\n\n" \
-             f"add a range of x values:\n" \
+             f"you can add a range of x values:\n" \
              f"{prefix}graph sin(x)|1,2\n" \
-             f"{prefix}graph sin(x)|cos(x)|x**2|3,5" \
+             f"you can also add a range of y values:\n" \
+             f"{prefix}graph sin(x)|1,2,3,4\n" \
 
 class CustomHelpCommand(commands.DefaultHelpCommand):
     def __init__(self):
