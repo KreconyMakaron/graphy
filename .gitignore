@@ -1,2 +1,6 @@
 .direnv
 .envrc
+token
+image.png
+.py
+__pycache__
