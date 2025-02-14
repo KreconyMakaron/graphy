@@ -1,5 +1,6 @@
 import discord
 from graph import plt
+from meth import intg, diff, simp
 from discord.ext import commands
 
 prefix = ';'
@@ -7,6 +8,9 @@ prefix = ';'
 intents = discord.Intents.default()
 bot = commands.Bot(command_prefix=prefix, intents=intents)
 intents.message_content = True
+
+def gen_aliases(s):
+    return [s[:i] for i in range(1, len(s))]
 
 graph_help = f"seperate shit with pipe |\n" \
              f"{prefix}graph sin(x)\n" \
@@ -48,7 +52,7 @@ bot.help_command = CustomHelpCommand()
 async def on_ready():
     print(f"Logged in as {bot.user}")
 
-@bot.command(help=graph_help, brief="graphs a funcion duh")
+@bot.command(help=graph_help, brief="graphs a funcion duh", aliases=gen_aliases("graph"))
 async def graph(ctx, *, formula: str = ""):
     if formula == "":
         await ctx.send("no graph provided womp womp")
@@ -70,5 +74,39 @@ async def graph(ctx, *, formula: str = ""):
     except Exception as e:
         await ctx.send(f'shit: {e}')
         return
+
+@bot.command(aliases=gen_aliases("derivative"),brief="finds the derivative duh")
+async def derivative(ctx, *, formula: str = ""):
+    if formula == "":
+        await ctx.send("no formula provided womp womp")
+        return
+    try:
+        d = diff(formula)
+        await ctx.send(f'derivative of `{formula}` is: \n```{d}```')
+    except Exception as e:
+        await ctx.send(f'shit: {e}')
+
+
+@bot.command(aliases=gen_aliases("integrate"), brief="finds the integral duh")
+async def integrate(ctx, *, formula: str = ""):
+    if formula == "":
+        await ctx.send("no formula provided womp womp")
+        return
+    try:
+        i = intg(formula)
+        await ctx.send(f'integral of `{formula}` is: \n```{i}```')
+    except Exception as e:
+        await ctx.send(f'shit: {e}')
+
+@bot.command(aliases=gen_aliases("simplify"), brief="simplifies duh")
+async def simplify(ctx, *, formula: str = ""):
+    if formula == "":
+        await ctx.send("no formula provided womp womp")
+        return
+    try:
+        s = simp(formula)
+        await ctx.send(f'{formula} is equal to: \n```{s}```')
+    except Exception as e:
+        await ctx.send(f'shit: {e}')
 
 bot.run(open('token').read())
