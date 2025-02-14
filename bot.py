@@ -54,18 +54,21 @@ async def graph(ctx, *, formula: str = ""):
         await ctx.send("no graph provided womp womp")
         return
 
-    embed = discord.Embed(
-        title=f"Graph of {formula}",
-        color=discord.Color.blue()
-    )
-
     try:
-        plt(formula).save('image.png')
+        p, f, xlim, ylim = plt(formula)
+        p.save('image.png')
+
+        embed = discord.Embed(
+            title=f"Graph of {f}",
+            description=f"{'' if xlim is None else f' x = [{xlim[0]}, {xlim[1]}]'}{'' if ylim is None else f' y = [{ylim[0]}, {ylim[1]}]'}",
+            color=discord.Color.blue()
+        )
+
         file = discord.File("./image.png", filename="image.png")
         embed.set_image(url="attachment://image.png")
         await ctx.send(file=file, embed=embed)
     except Exception as e:
-        await ctx.send(f'shit {e}')
+        await ctx.send(f'shit: {e}')
         return
 
 bot.run(open('token').read())
